@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %></title>
+</head>
+<body>
+  <h1><%= pageTitle %></h1>
+
+  <!-- User Form -->
+  
+  <form action="/user/<%= editing ? 'edit-user/' + user.id : 'add-user' %>" method="POST">
+    <% if (editing) { %>
+      <input type="hidden" name="userId" value="<%= user.id %>">
+    <% } %>
+    <input type="text" name="name" placeholder="Name" value="<%= editing ? user.name : '' %>" required>
+    <input type="email" name="email" placeholder="Email" value="<%= editing ? user.email : '' %>" required>
+    <input type="text" name="phone" placeholder="Phone" value="<%= editing ? user.phone : '' %>" required>
+    <button type="submit"><%= editing ? 'Update User' : 'Add User' %></button>
+  </form>
+  <!-- Users List -->
+  <h2>Users List</h2>
+<ul>
+  <% if (users && users.length > 0) { %>
+    <% users.forEach(user => { %>
+      <li>
+        <strong><%= user.name %></strong> - <%= user.email %> - <%= user.phone %>
+        <a href="/user/edit-user/<%= user.id %>?edit=true">Edit</a>
+        <form action="/user/delete-user" method="POST" style="display:inline;">
+          <input type="hidden" name="userId" value="<%= user.id %>">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  <% } else { %>
+    <p>No users found.</p> <!-- Message if no users exist -->
+  <% } %>
+</ul>
+</body>
+</html>
